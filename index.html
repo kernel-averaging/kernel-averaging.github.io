@@ -1,708 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Average Kernels are Better Kernels</title>
+  <meta name="description" content="Project page for Average Kernels are Better Kernels, a study of model ensembling by averaging representation kernels.">
+  <meta property="og:title" content="Average Kernels are Better Kernels">
+  <meta property="og:description" content="Averaging model kernels improves representational similarity and provides a target for student training.">
+  <meta property="og:image" content="img/figures/overview_diagram_2.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <script defer src="js/main.js"></script>
+</head>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-
-<script src="bootstrap.js"></script>
-<script type="text/javascript" charset="utf-8" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script> 
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-<style type="text/css">
-body {
-    font-family: "Titillium Web", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-weight: 300;
-    font-size: 17px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-@media screen and (min-width: 980px){
-    body {
-        width: 980px;
-    }
-}
-
-h1 {
-    font-weight:300;
-    line-height: 1.15em;
-}
-
-h2 {
-    font-size: 1.75em;
-}
-a:link,a:visited {
-    color: #5364cc;
-    text-decoration: none;
-}
-a:hover {
-    color: #208799;
-}
-h1 {
-    text-align: center;
-}
-h2,h3 {
-    text-align: left;
-}
-
-h1 {
-    font-size: 40px;
-    font-weight: 500;
-}
-h2 {
-    font-weight: 400;
-    margin: 16px 0px 4px 0px;
-}
-h3 {
-    font-weight: 600;
-    margin: 16px 0px 4px 0px;
-}
-
-.paper-title {
-    padding: 1px 0px 1px 0px;
-}
-section {
-    margin: 32px 0px 32px 0px;
-    text-align: justify;
-    clear: both;
-}
-.col-5 {
-     width: 20%;
-     float: left;
-}
-.col-4 {
-     width: 25%;
-     float: left;
-}
-.col-3 {
-     width: 33%;
-     float: left;
-}
-.col-2 {
-     width: 50%;
-     float: left;
-}
-.col-1 {
-     width: 100%;
-     float: left;
-}
-
-.author-row, .affil-row {
-    font-size: 26px;
-}
-
-.author-row-new { 
-    text-align: center; 
-}
-
-.author-row-new a {
-    display: inline-block;
-    font-size: 20px;
-    padding: 4px;
-}
-
-.author-row-new sup {
-    color: #313436;
-    font-size: 12px;
-}
-
-.affiliations-new {
-    font-size: 18px;
-    text-align: center;
-    width: 80%;
-    margin: 0 auto;
-    margin-bottom: 20px;
-}
-
-.row {
-    margin: 16px 0px 16px 0px;
-}
-.authors {
-    font-size: 26px;
-}
-.affiliatons {
-    font-size: 18px;
-}
-.affil-row {
-    margin-top: 18px;
-}
-.teaser {
-    max-width: 100%;
-}
-.text-center {
-    text-align: center;  
-}
-.screenshot {
-    width: 256px;
-    border: 1px solid #ddd;
-}
-.screenshot-el {
-    margin-bottom: 16px;
-}
-hr {
-    height: 1px;
-    border: 0; 
-    border-top: 1px solid #ddd;
-    margin: 0;
-}
-.material-icons {
-    vertical-align: -6px;
-}
-p {
-    line-height: 1.25em;
-    margin: 0.25em;
-}
-.caption {
-    font-size: 16px;
-    color: #666;
-    margin-top: 4px;
-    margin-bottom: 10px;
-}
-
-
-video {
-    display: block;
-    margin: auto;
-}
-
-
-figure {
-    display: block;
-    margin: auto;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-#bibtex pre {
-    font-size: 14px;
-    background-color: #eee;
-    padding: 16px;
-}
-.blue {
-    color: #2c82c9;
-    font-weight: bold;
-}
-.orange {
-    color: #d35400;
-    font-weight: bold;
-}
-.flex-row {
-    display: flex;
-    flex-flow: row wrap;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-.paper-btn-coming-soon {
-    position: relative; 
-    top: 0;
-    left: 0;
-}
-
-.coming-soon {
-    position: absolute;
-    top: -15px;
-    right: -15px;
-}
-
-.paper-btn {
-  position: relative;
-  text-align: center;
-
-  display: inline-block;
-  margin: 8px;
-  padding: 8px 8px;
-
-  border-width: 0;
-  outline: none;
-  border-radius: 2px;
-  
-  background-color: #5364cc;
-  color: white !important;
-  font-size: 20px;
-  width: 100px;
-  font-weight: 600;
-}
-.paper-btn-parent {
-    display: flex;
-    justify-content: center;
-    margin: 16px 0px;
-}
-
-.paper-btn:hover {
-    opacity: 0.85;
-}
-
-.container {
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 16px;
-    padding-right: 16px;
-}
-
-.venue {
-    font-size: 23px;
-}
-
-.topnav {
-    background-color: #EEEEEE;
-    overflow: hidden;
-}
-
-.topnav div {
-    max-width: 1070px;
-    margin: 0 auto;
-}
-
-.topnav a {
-    display: inline-block;
-    color: black;
-    text-align: center;
-    vertical-align: middle;
-    padding: 16px 16px;
-    text-decoration: none;
-    font-size: 18px;
-}
-
-.topnav img {
-    padding: 2px 0px;
-    width: 100%;
-    margin: 0.2em 0px 0.3em 0px;
-    vertical-align: middle;
-}
-
-pre {
-    font-size: 0.9em;
-    padding-left: 7px;
-    padding-right: 7px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    border-radius: 3px;
-    background-color: rgb(235, 235, 235);
-    overflow-x: auto;
-}
-
-.download-thumb {
-    display: flex;
-}
-
-@media only screen and (max-width: 620px) {
-    .download-thumb {
-        display: none;
-    }
-}
-
-.paper-stuff {
-    width: 50%;
-    font-size: 20px;
-}
-
-@media only screen and (max-width: 620px) {
-    .paper-stuff {
-        width: 100%;
-    }
-}
-* {
-  box-sizing: border-box;
-}
-
-.column {
-  text-align: center;
-  float: left;
-  width: 16.666%;
-  padding: 5px;
-}
-.column3 {
-  text-align: center;
-  float: left;
-  width: 33.333%;
-  padding: 5px;
-}
-.column4 {
-  text-align: center;
-  float: left;
-  width: 50%;
-  padding: 5px;
-}
-.column5 {
-  text-align: center;
-  float: left;
-  width: 20%;
-  padding: 5px;
-}
-.border-right {
-    border-right: 1px solid black;
-}
-.border-bottom{
-    border-bottom: 1px solid black;
-}
-
-
-
-/* Clearfix (clear floats) */
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-.img-fluid {
-  max-width: 100%;
-  height: auto;
-}
-.figure-img {
-  margin-bottom: 0.5rem;
-  line-height: 1;
-}
-
-
-
-
-
-
-
-
-.rounded-circle {
-  border-radius: 50% !important;
-}
-
-
-
-
-
-
-/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 500px) {
-  .column {
-    width: 100%;
-  }
-}
-@media screen and (max-width: 500px) {
-  .column3 {
-    width: 100%;
-  }
-}
-
-</style>
-<link rel="stylesheet" href="bootstrap-grid.css">
-
-<script type="text/javascript" src="../js/hidebib.js"></script>
-    <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,600,400italic,600italic,300,300italic' rel='stylesheet' type='text/css'>
-    <head>
-        <title>Average Kernels are Better Kernels</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta property="og:description" content="Kernel Averaging"/>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
-        <meta name="twitter:title" content="Average Kernels are Better Kernels">
-        <meta name="twitter:description" content="">
-        <meta name="twitter:image" content="">
-    </head>
-
- <body>
-
-
+<body>
 <div class="container">
-    <div class="paper-title">
-    <h1> 
-        Average Kernels are Better Kernels
+  <header class="paper-title">
+    <h1>Average Kernels are Better Kernels</h1>
+
+    <div class="author-row-new" aria-label="Authors">
+      <a href="https://czlwang.com/">Christopher Wang<sup>1*</sup></a>,
+      <a href="https://vsubramaniam851.github.io/">Vighnesh Subramaniam<sup>1*</sup></a>,
+      <a href="https://scholar.google.com/citations?user=fRJbyD8AAAAJ&amp;hl=en">Dan Gutfreund<sup>2</sup></a>,
+      <a href="https://people.csail.mit.edu/boris/boris.html">Boris Katz<sup>1</sup></a>,
+      <a href="https://web.mit.edu/phillipi/">Phillip Isola<sup>1</sup></a>,
+      <a href="https://briancheung.github.io/">Brian Cheung<sup>1</sup></a>
     </div>
 
-    <div id="authors">
-        <center>
-            <div class="author-row-new">
-                <a href="https://czlwang.com/">Christopher Wang<sup>1*</sup></a>,
-                <a href="https://vsubramaniam851.github.io/">Vighnesh Subramaniam<sup>1*</sup></a>,
-                <a href="https://scholar.google.com/citations?user=fRJbyD8AAAAJ&hl=en">Dan Gutfreund<sup>2</sup></a>,
-                <a href="https://people.csail.mit.edu/boris/boris.html">Boris Katz<sup>1</sup></a>,
-                <a href="https://web.mit.edu/phillipi/">Phillip Isola<sup>1</sup></a>,
-                <a href="https://briancheung.github.io/">Brian Cheung<sup>1</sup></a>
-            </div>
-        </center>
-        <center>
-        <div class="affiliations">
-            <span><sup>1</sup> MIT CSAIL</span>
-            <span><sup>2</sup> IBM Research</span><br/>
-        </div>
-
-        <br>*Equal contribution.
-
-        <div style="clear: both">
-            <div class="paper-btn-parent">
-            <a class="paper-btn" href="">
-                <span class="material-icons"> description </span> 
-                 Paper
-            </a>
-            <div class="paper-btn-coming-soon">
-                <a class="paper-btn" href="https://github.com/czlwang/kernel_averaging">
-                    <span class="material-icons"> code </span>
-                    Code
-                </a>
-            </div>
-        </div></div>
+    <div class="affiliations">
+      <span><sup>1</sup> MIT CSAIL</span>
+      <span><sup>2</sup> IBM Research</span><br>
+      <span>*Equal contribution.</span>
     </div>
 
-    
-    <!-- <section id="teaser-image">
-        <center>
-            <figure>
-                <video class="centered" width="80%" autoplay loop muted playsinline class="video-background " >
-                    <source src="assets/LION_video_v10.mp4#t=0.001" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </figure>
+    <div class="paper-btn-parent" aria-label="Project links">
+      <span class="paper-btn disabled" title="Paper link will be added when public">Paper</span>
+      <a class="paper-btn" href="https://github.com/czlwang/kernel_averaging">Code</a>
+    </div>
 
-        </center>
-    </section>
-     -->
+    <p class="tagline">
+      Model ensembling in representation space: average kernels from independently trained models, compare to a stronger oracle, and train a student toward the averaged similarity structure.
+    </p>
+  </header>
 
-    <section id="teaser-image">
-        <h2><b>Averaging Kernels can improve representations!</b></h2>
-        <center>
-            <figure>
-                <img src="img/overview_diagram_2.png", style="width:1100px">
-            </figure>
+  <section id="teaser-image">
+    <h2>Averaging kernels can improve representations.</h2>
+    <figure>
+      <img src="img/figures/overview_diagram_2.png" alt="Overview diagram of kernel averaging and student training." class="wide-img">
+      <figcaption>
+        Kernels are computed from model embeddings, averaged across teachers, and used as a target for student training.
+      </figcaption>
+    </figure>
+  </section>
 
-        </center>
-    </section>
-    <br>
-    <section id="abstract"/>
-        <hr>
-        <h2>Abstract</h2>
-        <div class="flex-row">
-            <p>
-            If multiple artists are asked to draw a circle by hand, each one will produce something slightly imperfect.
-            Yet, the average of their sketches can look strikingly close to ideal.
-            We investigate whether representations produced by separately trained models adhere to a similar principle.
-            Precisely, we study the average model <em>kernel</em>: the Gram matrix computed from all model embeddings.
-            Using metrics of representational similarity, i.e., Centered Kernel Alignment (CKA) and Mutual k-Nearest Neighbors (MKNN), we show that the average kernel increases in similarity with the kernel of a stronger model.
-            We demonstrate this for vision models trained on different datasets, skewed datasets, models of different architectures, and even models trained on different tasks.
-            Empirically, we even find that the similarity landscape with respect to teacher kernels is a convex basin.
-            Finally, we show how averaging can be directly translated into improved model performance by using DiffKNN, a differentiable version of MKNN, to optimize a student network for representational similarity with the average kernel.
-            We observe that the resulting student model increases in task accuracy with the number of models being averaged.
-            More broadly, our findings hint at a more general framing that can be given for model-merging techniques, in which models can be thought to lie in the same loss basin with respect to their representations.
-            </p>
-        </div>
-    </section>
-    <!-- <section id="method"/>
-        <hr>
-        <h2>What is <i>guidance</i>?</h2>
-            <div class="flex-row">
-                <p>
-                We propose <i>Guidance</i> between two networks to make untrainable networks trainable. Given a target which cannot be trained effectively on a task, e.g., a fully connected network (FCN) which immediately overfits on vision tasks, we guide it with another network.
-                </p>
-            </div>
-            <div class="flex-row">
-                <p>
-                    <b>Layer-wise representational alignment</b> In addition to the target's cross-entropy loss, we encourage the network to minimize the representational similarity between target and guide activations layer by layer. We measure the similarity using <i>centered kernel alignment.</i>
-                </p>
-            </div>
-            <div class="flex-row">
-                <p>
-                    <b>Randomly Initialized Guide Networks</b> The guide can be untrained, i.e., randomly initialized. This procedure transfers the inductive biases from the architecture of the guide to the target. The guide is never updated.
-                </p>
-            </div>
-            <div class="flex-row">
-                <p>
-                    <b>Training improvement</b> The target undergoing guidance no longer immediately overfits can now be be trained. Here we show an untrained ResNet guiding a deep fully connected network to perform object classification. The FCN alone overfits, the guided version can now be optimized. It has gone from untrainable to trainable.
-                </p>
-            </div>
-    </section>
-
-    <section id="results_overview"/>
+  <section id="abstract">
     <hr>
-    <h2>Results: Guidance makes untrainable networks trainable!</h2>
-    <h3><b>Guidance improves performance for image classification across fully connected networks and deep convolutional networks without residual connections, <span style="color: red;">particularly with randomly initialized guide networks</span>.</b> </h3>
-        <br><br>
-        <div class="mx-auto">
-            <center><img class="card-img-top" src="img/image_net.png" style="width:950px"></center>
-        </div>
-        <p>We apply guidance on three untrainable networks: (1) a Deep FCN guided by a ResNet-18, (2) a Wide FCN guided by a ResNet-18, and (3) a Deep Convolutional Network guided by ResNet-50. Across all settings, guidance can help
-            train architectures that were otherwise considered unsuitable.</p>
-    
-    <h3><b>Guidance improves performance for sequence modeling across 3 tasks that are untrainable across both transformers and RNNs.</b> </h3>
+    <h2>Abstract</h2>
+    <p>
+      If multiple artists are asked to draw a circle by hand, each one will produce something slightly imperfect.
+      Yet, the average of their sketches can look strikingly close to ideal.
+      We investigate whether representations produced by separately trained models adhere to a similar principle.
+      Precisely, we study the average model <em>kernel</em>: the Gram matrix computed from all model embeddings.
+      Using metrics of representational similarity, i.e., Centered Kernel Alignment (CKA) and Mutual k-Nearest Neighbors (MKNN), we show that the average kernel increases in similarity with the kernel of a stronger model.
+      We demonstrate this for vision models trained on different datasets, skewed datasets, models of different architectures, and even models trained on different tasks.
+      Empirically, we even find that the similarity landscape with respect to teacher kernels is a convex basin.
+      Finally, we show how averaging can be directly translated into improved model performance by using DiffKNN, a differentiable version of MKNN, to optimize a student network for representational similarity with the average kernel.
+      We observe that the resulting student model increases in task accuracy with the number of models being averaged.
+      More broadly, our findings hint at a more general framing that can be given for model-merging techniques, in which models can be thought to lie in the same loss basin with respect to their representations.
+    </p>
+  </section>
 
-        <div class="mx-auto">
-            <center><img class="card-img-top" src="img/seq_model.png" style="width:950px"></center>
-        </div>
-        <p>We apply guidance on across two sequence-based architectures for three sequence modeling tasks: (1) copy-paste with RNN guided by a Transformer, (2) parity with a Transformer guided by an RNN, and (3) language modeling with an RNN guided by a Transformer. RNN performance improves dramatically
-            when aligning with the representations of a Transformer for copy and paste, as well as for language modeling. <span style="color: red;">RNNs close most of the gap to Transformers for language modeling</span>. Transformers in turn, improve parity performance when aligning with an RNN. Guidance is able to transfer priors between networks. </p>
-    <h3><b>Guidance improves training by preventing overfitting and drives training and validation loss lower than using base training.</b> </h3>
+  <section id="method">
+    <hr>
+    <h2>Kernel averaging</h2>
+    <p>
+      A model layer maps each input example to an embedding. Taking all pairwise inner products among those embeddings produces a kernel matrix, so the entry <span class="math">K<sub>ij</sub></span> measures how similar example <span class="math">i</span> is to example <span class="math">j</span> under that layer's representation.
+    </p>
+    <p>
+      The method averages these matrices across teachers and layers, then asks whether the averaged kernel is closer to a stronger oracle model than any individual teacher kernel. The same averaged kernel can also guide a student through DiffKNN, CKA, or UCKA alignment losses.
+    </p>
+  </section>
 
-        <div class="mx-auto">
-            <center><img class="card-img-top" src="img/training_curve_3.png" style="width:950px"></center>
-        </div>
-        <p><b>Training and Validation Curves</b> We find across all settings that guidance improves training and validation loss. Guidance prevents overfitting and settings where loss saturates.</p>
-    </section>
+  <section id="kernel-results">
+    <hr>
+    <h2>The average kernel becomes more oracle-like.</h2>
+    <figure>
+      <img src="img/figures/results_avg_overview.png" alt="Overview of kernel averaging results, including MKNN bars and trends over number of averaged kernels." class="wide-img">
+      <figcaption>
+        The red bars mark the averaged kernel; the trend plots show representational similarity increasing as more kernels are averaged.
+      </figcaption>
+    </figure>
+  </section>
 
-    <div class="section">
-        <h2>Error Consistency: Functional Properties of Guided Networks</h2>
-        <hr>
-        <p>
-            Given our guided networks, we can analyze the functional properties of the guided network to confirm whether networks adopt priors from their guide networks. Using Deep FCN as our target model, we guide it with a ResNet-18 or a ViT-B-16. We then measure the error consistency between all of the networks.
-        </p>
-        <figure>
-            <a>
-                <img class="centered" width="65%" src="img/error_consistency.png"> 
-            </a>
-            <p class="caption-right">
-                <b>Guidance aligns error consistency.</b> The relationship between the guide networks is mirrored in that
-                of the guided networks even when the target is entirely unlike the guides initially. This is additional evidence
-                that guidance doesn’t just improve performance arbitrarily, the target becomes more like the guide.<br>
-        </figure>
+  <section id="animation">
+    <hr>
+    <h2>Interactive kernel progression</h2>
+    <p>
+      We visualize a kernel from a network trained on a specialist distribution of ImageNet-100. 
+      The slider shows the student-kernel progression as more
+      kernels are averaged together. The oracle kernel is shown last.
+    </p>
+
+    <div class="viewer" data-viewer>
+      <div class="viewer-image-wrap">
+        <img id="kernel-frame" src="img/frames/student_specialist_01.png" alt="Student kernel heatmap for 1 teacher.">
+        <div class="frame-label" id="frame-label">1 teacher</div>
+      </div>
+      <div class="viewer-controls">
+        <button type="button" data-action="prev" aria-label="Previous kernel frame">‹</button>
+        <input id="frame-slider" type="range" min="0" max="9" value="0" step="1" aria-label="Kernel progression frame">
+        <button type="button" data-action="next" aria-label="Next kernel frame">›</button>
+        <button type="button" data-action="play">Play</button>
+      </div>
     </div>
+  </section>
 
-    <div class="section">
-        <h2>Guidance Implications for Network Initialization</h2>
-        <hr>
-        <p>
-            Is guidance needed throughout training, or is the effect of the guide to move the target into a regime where the two are aligned and the target can be optimized further without reference to the guide? The answer to this question can shed light on whether the guide is telling us that better initializations are likely to exist for the target. To answer this question, we disconnect the guide from the target after an arbitrary and nominal number of training steps, 150.
-        </p>
-    </div>
-        <figure>
-            <a>
-                <center>
-                <img class="centered" width="90%" src="img/early_stop_final_plot.png"> 
-                </center>
-            </a>
-            <p class="caption">
-                <b>Disconnecting the guide early can have long-term effects.</b> The Deep FCN
-                still does not diverge and the training and validation loss still mirror one another. Very likely, an initialization
-                regime exists for Deep FCNs that prevents overfitting. We now have the tools to investigate this question.<br>
-        </figure>
-    </div> -->
+  <section id="student-training">
+    <hr>
+    <h2>Training students with the averaged kernel</h2>
+    <p>
+      The paper trains students with cross-entropy plus a similarity objective to the averaged teacher kernel. 
+      Across the results, DiffKNN, CKA, and UCKA targets improve student representations, with DiffKNN giving the strongest accuracy 
+      curves!
+    </p>
+    <figure>
+      <img src="img/figures/accuracy_scaling.png" alt="Accuracy scaling plots for specialist, generalist, multi-architecture, and multi-task ensembles." class="wide-img">
+      <figcaption>
+        Student accuracy as more teachers are included in the averaged-kernel target.
+      </figcaption>
+    </figure>
+    <figure>
+      <img src="img/figures/training_results_overview.png" alt="Student kernel progression and student training trends." class="wide-img">
+      <figcaption>
+        Student kernel progression and similarity trends from the paper's training results.
+      </figcaption>
+    </figure>
+  </section>
 
-    <br>
-    <!-- <div class="section">
-        <hr>
-        <h2>Related Works</h2>
-        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-        <tr>
-                <td style="padding:20px;width:25%;vertical-align:middle">
-                  <img src="img/unipi.gif" alt="PontTuset" width="240" style="border-style: none">
-                </td>
-                <td width="75%" valign="middle">
-                  <a href="https://arxiv.org/pdf/2302.00111.pdf">
-                    <papertitle>Learning Universal Policies via Text-Guided Video Generation</papertitle>
-                  </a>
-                  <p> 
-                    We cast the sequential decision making problem as a text-conditioned video generation problem, where, given a text-encoded specification of a desired goal, a planner synthesizes a set of future frames depicting its planned actions in the future, and the actions will be extracted from the generated video. Our policy-as-video formulation can represent environments with different state and action spaces in a unified space of images, enabling learning and generalization across a wide range of robotic manipulation tasks.
-                  </p>
-                </td>
-        </tr>
-        <tr>
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <img src="img/decisiondiff.gif" alt="PontTuset" width="240" style="border-style: none">
-            </td>
-            <td width="75%" valign="middle">
-              <a href="https://openreview.net/pdf?id=sP1fo2K9DFG">
-                <papertitle>Is Conditional Generative Modeling all you need for Decision Making?</papertitle>
-              </a>
-              <p> 
-                We illustrate how conditional generative modeling is a powerful paradigm for decision-making, enabling us utilize a reward conditional model to effectively perform offline RL. We further illustrate how conditional generative modeling enables us to compose multiple different constraints and skills together.
-              </p>
-              <br>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <img src="img/diffuser.gif" alt="PontTuset" width="240" style="border-style: none">
-            </td>
-            <td width="75%" valign="middle">
-              <a href="https://arxiv.org/abs/2205.09991">
-                <papertitle>Planning with Diffusion for Flexible Behavior Synthesis</papertitle>
-              </a>
-              <p> 
-                Diffuser is a denoising diffusion probabilistic model that plans by iteratively refining randomly sampled noise. The denoising process lends itself to flexible conditioning, by either using gradients of an objective function to bias plans toward high-reward regions or conditioning the plan to reach a specified goal.
-              </p>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <img src="img/compose_pretrain.gif" alt="PontTuset" width="240" style="border-style: none">
-            </td>
-            <td width="75%" valign="middle">
-              <a href="https://arxiv.org/abs/2210.11522">
-                <papertitle>Composing Pretrained Models through Iterative Consensus</papertitle>
-              </a>
-              <p> 
-                We present a method to combine different large pretrained models together by having individual models communicate with each other through iterative consensus. We illustrate how this combination of models can do zero-shot VQA, image generation, reasoning, and image generation.
-              </p>
-            </td>
-        </tr>
-        </tbody></table>
-    </div> -->
+  <section id="efficiency">
+    <hr>
+    <h2>Data and compute efficiency</h2>
+    <p>
+      In the ImageNet-100 experiments, the guided student curves improve performance on unseen classes and reach baseline performance with fewer examples or fewer epochs.
+    </p>
+    <figure>
+      <img src="img/figures/data_scaling_paper.png" alt="Data and epoch scaling results for guided students versus baseline students." class="wide-img">
+      <figcaption>
+        Data scaling, epoch scaling, and unseen-class generalization results from the paper.
+      </figcaption>
+    </figure>
+  </section>
 
-   
-    <!-- <section id="bibtex">
-        <h2>Bibtex</h2>
-        <div class="page-body"><pre id="ad6975be-3353-467d-ae48-6313d767ffa6" class="code"><code>
-            @inproceedings{
-                ajay2023is,
-                title={Is Conditional Generative Modeling all you need for Decision Making?},
-                author={Anurag Ajay and Yilun Du and Abhi Gupta and Joshua B. Tenenbaum and Tommi S. Jaakkola and Pulkit Agrawal},
-                booktitle={The Eleventh International Conference on Learning Representations },
-                year={2023},
-                url={https://openreview.net/forum?id=sP1fo2K9DFG}
-            }    
-        </code></pre><p id="1a3aa306-c4b8-4872-8fb0-411495c73d55" class="">
-        </p></div>
+  <section id="figure-browser">
+    <hr>
+    <h2>Additional findings</h2>
+    <p>
+       We have even more results showcasing how kernel averaging improves representations across several settings, showing general convexity 
+       across a set of models. 
+    </p>
 
-    </section> -->
+    <label class="select-label" for="figure-select">Figure</label>
+    <select id="figure-select">
+      <option value="simplices">Simplex landscapes</option>
+      <option value="multiarch-trends">Multi-architecture trends</option>
+      <option value="multitask">Mixed-task averaging</option>
+      <option value="multiarch-landscape">Architecture landscapes</option>
+      <option value="multiarch-controlled">Accuracy-controlled architectures</option>
+    </select>
 
+    <figure class="figure-browser-panel">
+      <img id="browser-image" src="img/figures/simplices_overview.png" alt="Simplex landscapes showing oracle similarity for convex weighted averages of kernels." class="wide-img">
+      <figcaption id="browser-caption">
+        Simplex landscapes: each triangle interpolates among three teacher kernels. High-similarity regions often lie near the barycenter, 
+        supporting plain averaging as a natural operation.
+      </figcaption>
+    </figure>
+  </section>
 
+  <section id="numbers">
+    <hr>
+    <h2>Quantitative table</h2>
+    <details>
+      <summary>Show student performance table</summary>
+      <p class="caption-text">
+        DiffKNN uses all teachers as the similarity target: <span class="math">n=5</span> for CIFAR10 and <span class="math">n=10</span> for ImageNet-100. Standard errors are across three seeds.
+      </p>
 
-    <!-- <section id="paper">
-        <h2>Paper</h2>
-        <hr>
-        <div class="flex-row">
-            <div class="download-thumb">
-            <div style="box-sizing: border-box; padding: 16px; margin: auto;">
-                <a href="https://energy-based-model.github.io/composing-pretrained-models/"><img class="screenshot" src="materials/thumb_finger.png"></a>
-            </div>
-        </div>
-            <div class="paper-stuff">
-                <p><b>Composing Ensembles of Pre-trained Models via Iterative Consensus</b></p>
-                <p>Shuang Li, Yilun Du, Joshua B. Tenenbaum, Antonio Torralba, Igor Mordatch</p>
-                <div><span class="material-icons"> description </span><a href="https://arxiv.org/abs/2210.06978"> arXiv version</a></div>
-                <div><span class="material-icons"> integration_instructions </span><a href="https://github.com/nv-tlabs/LION"> Code</a></div>
-            </div>
-            </div>
-        </div>
-    </section> -->
+      <h3>Specialist training</h3>
+      <div class="table-wrap" tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Training</th>
+              <th scope="col">CIFAR10 Acc@1</th>
+              <th scope="col">CIFAR10 Acc@5</th>
+              <th scope="col">ImageNet-100 Acc@1</th>
+              <th scope="col">ImageNet-100 Acc@5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Baseline</th><td>55.68 ± 0.68</td><td>94.37 ± 0.11</td><td>39.92 ± 0.02</td><td>65.99 ± 0.22</td></tr>
+            <tr class="highlight"><th scope="row">DiffKNN</th><td>65.31 ± 0.39</td><td>96.92 ± 0.06</td><td>44.59 ± 0.28</td><td>70.81 ± 0.09</td></tr>
+            <tr><th scope="row">CKA</th><td>64.24 ± 0.18</td><td>96.93 ± 0.17</td><td>42.94 ± 0.22</td><td>69.43 ± 0.36</td></tr>
+            <tr><th scope="row">UCKA</th><td>63.87 ± 0.20</td><td>96.38 ± 0.12</td><td>42.43 ± 0.36</td><td>68.87 ± 0.28</td></tr>
+            <tr><th scope="row">Prediction ensemble</th><td>70.62 ± 0.31</td><td>96.89 ± 0.075</td><td>56.49 ± 0.33</td><td>71.52 ± 0.28</td></tr>
+            <tr><th scope="row">Oracle</th><td>91.50 ± 0.09</td><td>99.67 ± 0.02</td><td>84.08 ± 0.10</td><td>95.61 ± 0.03</td></tr>
+          </tbody>
+        </table>
+      </div>
 
+      <h3>Generalist training</h3>
+      <div class="table-wrap" tabindex="0">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Training</th>
+              <th scope="col">CIFAR10 Acc@1</th>
+              <th scope="col">CIFAR10 Acc@5</th>
+              <th scope="col">ImageNet-100 Acc@1</th>
+              <th scope="col">ImageNet-100 Acc@5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Baseline</th><td>81.52 ± 0.53</td><td>98.78 ± 0.08</td><td>52.98 ± 0.26</td><td>76.95 ± 0.32</td></tr>
+            <tr class="highlight"><th scope="row">DiffKNN</th><td>84.29 ± 0.06</td><td>99.14 ± 0.02</td><td>57.44 ± 0.07</td><td>81.31 ± 0.23</td></tr>
+            <tr><th scope="row">CKA</th><td>82.62 ± 0.11</td><td>98.98 ± 0.08</td><td>56.28 ± 0.26</td><td>80.16 ± 0.16</td></tr>
+            <tr><th scope="row">UCKA</th><td>83.69 ± 0.27</td><td>99.04 ± 0.05</td><td>55.73 ± 0.20</td><td>79.65 ± 0.29</td></tr>
+            <tr><th scope="row">Prediction ensemble</th><td>86.38 ± 0.03</td><td>95.34 ± 0.08</td><td>64.72 ± 0.28</td><td>79.45 ± 0.16</td></tr>
+            <tr><th scope="row">Oracle</th><td>91.50 ± 0.09</td><td>99.67 ± 0.02</td><td>84.08 ± 0.10</td><td>95.61 ± 0.03</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </section>
 
+  <section id="acknowledgements">
+    <hr>
+    <h2>Acknowledgements</h2>
+    <details>
+      <summary>Show acknowledgements</summary>
+      <p>
+        This work was supported by the Center for Brains, Minds, and Machines, NSF STC award CCF-1231216, the NSF award 2124052, the MIT CSAIL Machine Learning Applications Initiative, the MIT-IBM Watson AI Lab, the CBMM-Siemens Graduate Fellowship, the DARPA Artificial Social Intelligence for Successful Teams (ASIST) program, the DARPA Mathematics for the DIscovery of ALgorithms and Architectures (DIAL) program, the DARPA Knowledge Management at Scale and Speed (KMASS) program, the DARPA Machine Common Sense (MCS) program, the United States Air Force Research Laboratory and the Department of the Air Force Artificial Intelligence Accelerator under Cooperative Agreement Number FA8750-19-2-1000, the Air Force Office of Scientific Research (AFOSR) under award number FA9550-21-1-0399, and the Office of Naval Research under award number N00014-20-1-2589 and award number N00014-20-1-2643. The views and conclusions contained in this document are those of the authors and should not be interpreted as representing the official policies, either expressed or implied, of the Department of the Air Force or the U.S. Government. The U.S. Government is authorized to reproduce and distribute reprints for Government purposes notwithstanding any copyright notation herein.
+      </p>
+    </details>
+  </section>
 
-    <!-- <section id="bibtex">
-        <h2>Citation</h2>
-        <hr>
-        <pre><code>@inproceedings{zeng2022lion,
-            title={LION: Latent Point Diffusion Models for 3D Shape Generation},
-            author={Xiaohui Zeng and Arash Vahdat and Francis Williams and Zan Gojcic and Or Litany and Sanja Fidler and Karsten Kreis},
-            booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
-            year={2022}
-        }</code></pre>
-    </section> -->
-
-    <section>
-        <h2>Acknowledgements</h2>
-        <p>This work was supported by the Center for Brains, Minds, and Machines, NSF STC award CCF-
-            1231216, the NSF award 2124052, the MIT CSAIL Machine Learning Applications Initiative, the
-            MIT-IBM Watson AI Lab, the CBMM-Siemens Graduate Fellowship, the DARPA Artificial Social
-            Intelligence for Successful Teams (ASIST) program, the DARPA Mathematics for the DIscovery
-            of ALgorithms and Architectures (DIAL) program, the DARPA Knowledge Management at Scale
-            and Speed (KMASS) program, the DARPA Machine Common Sense (MCS) program, the United
-            States Air Force Research Laboratory and the Department of the Air Force Artificial Intelligence
-            Accelerator under Cooperative Agreement Number FA8750-19-2-1000, the Air Force Office of Scientific Research (AFOSR) under award number FA9550-21-1-0399, and the Office of Naval Research under award number N00014-20-1-2589 and award number N00014-20-1-2643. The views
-            and conclusions contained in this document are those of the authors and should not be interpreted
-            as representing the official policies, either expressed or implied, of the Department of the Air Force
-            or the U.S. Government. The U.S. Government is authorized to reproduce and distribute reprints for
-            Government purposes notwithstanding any copyright notation herein.</p>
-    </section>
-
-    <section>
-        This webpage template was recycled from <a href='https://nv-tlabs.github.io/LION/'>here</a>.
-        <center><p><a href='https://accessibility.mit.edu/'><b>Accessibility</b></a></p></center>
-    </section>
-    
-
-
+  <footer>
+    <p>This webpage template keeps the lightweight style of the uploaded project page.</p>
+    <p><a href="https://accessibility.mit.edu/"><strong>Accessibility</strong></a></p>
+  </footer>
 </div>
 </body>
 </html>
